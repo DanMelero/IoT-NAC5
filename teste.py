@@ -9,17 +9,13 @@ import sys
 import os.path
 import numpy as np
 
-#filtro baixo
-# image_lower_hsv1 = np.array([0, 142, 84])
-# image_upper_hsv1 = np.array([18, 205, 255])
-image_lower_hsv1 = np.array([0, 130, 190])
-image_upper_hsv1 = np.array([10, 255, 255])
 
-#filtro alto
-# image_lower_hsv2 = np.array([70, 160, 114])
-# image_upper_hsv2 = np.array([100, 205, 255])
-image_lower_hsv2 = np.array([163, 232, 137])
-image_upper_hsv2 = np.array([10, 255, 255])
+image_lower_hsv1 = np.array([0, 165, 89])
+image_upper_hsv1 = np.array([0, 255, 255])
+
+image_lower_hsv2 = np.array([0, 130, 190])
+image_upper_hsv2 = np.array([97, 255, 255])
+
 
 def filtro_de_cor(img_bgr, low_hsv, high_hsv):
     """ retorna a imagem filtrada"""
@@ -62,68 +58,53 @@ def image_da_webcam(img):
     mask_rgb = cv2.cvtColor(mask_hsv, cv2.COLOR_GRAY2RGB)
     contornos_img = mask_rgb.copy()
 
-    menor1 = None
-    menor2 = None
-    menor3 = None
-    menor4 = None
+    maior1 = None
+    maior2 = None
 
     lista = []
+
     for i in contornos:
         area = int(cv2.contourArea(i))
         lista.append(area)
-    listaOrdenada = sorted(lista)
+    listaOrdenada = lista.sort(reverse = True)
 
     for c in contornos:
         area = int(cv2.contourArea(c))
         if listaOrdenada[0] == area:
-            menor1 = c
+            maior1 = c
         elif listaOrdenada[1] == area:
-            menor2 = c
-        elif listaOrdenada[2] == area:
-            menor3 = c
-        else:
-            menor4 = c
-    M1 = cv2.moments(menor1)
-    M2 = cv2.moments(menor2) 
-    M3 = cv2.moments(menor3)
-    M4 = cv2.moments(menor4)
+            maior2 = c
+        
+    M1 = cv2.moments(maior1)
+    M2 = cv2.moments(maior2) 
 
-    # Verifica se existe alguma para calcular, se sim calcula e exibe no display
     if M1["m00"] != 0 and M2["m00"] != 0:
-        cv2.drawContours(contornos_img, [menor1], -1, [0, 0, 255], thickness=cv2.FILLED)
-        cv2.drawContours(contornos_img, [menor2], -1, [0, 0, 255], thickness=cv2.FILLED)
+        cX1 = int(M1["m10"] / M1["m00"])
+        cY1 = int(M1["m01"] / M1["m00"])
+        cX2 = int(M2["m01"] / M2["m00"])
+        cY2 = int(M2["m01"] / M2["m00"])
+
+        cv2.drawContours(contornos_img, [maior1], -1, [177, 11, 11], 5)
+        cv2.drawContours(contornos_img, [maior2], -1, [79, 226, 208], 5)
     
-    elif M3["m00"] != 0 and M4["m00"] != 0:
-        cX3 = int(M3["m10"] / M3["m00"])
-        cY3 = int(M3["m01"] / M3["m00"])
-        cX4 = int(M4["m10"] / M4["m00"])
-        cY4 = int(M4["m01"] / M4["m00"])
+        desenha_cruz(contornos_img, cX1, cY1, 20, (177, 11, 11))
+        desenha_cruz(contornos_img, cX2, cY2, 20, (79, 226, 208))
 
-        cv2.drawContours(contornos_img, [menor3], -1, [0, 255, 0], 5)
-        cv2.drawContours(contornos_img, [menor4], -1, [0, 255, 0], 5)
+        texto1 = cY1, cX1
+        origem1 = (0, 50)
 
+        texto2 = cY2, cX2
+        origem2 = (0, 50)
 
-        #faz a cruz no centro de massa
-        desenha_cruz(contornos_img, cX3, cY3, 20, (0, 0, 255))
-        desenha_cruz(contornos_img, cX4, cY4, 20, (0, 0, 255))
+        escreve_texto(contornos_img, texto1, origem1, (0, 255, 0))
+        escreve_texto(contornos_img, texto2, origem2, (0, 255, 0))
 
-        # Para escrever vamos definir uma fonte
-        texto3 = cY3, cX3
-        origem3 = (0, 50)
-
-        texto4 = cY4, cX4
-        origem4 = (0, 50)
-
-        escreve_texto(contornos_img, texto3, origem3, (0, 255, 0))
-        escreve_texto(contornos_img, texto4, origem4, (0, 255, 0))
-
-        coord3 = (cX3, cY3)
-        coord4 = (cX4, cY4)
-        cv2.line(contornos_img, coord3, coord4, (0, 0, 255), 4)
+        coord1 = (cX1, cY1)
+        coord2 = (cX2, cY2)
+        cv2.line(contornos_img, coord1, coord2, (0, 0, 255), 4)
 
     else:
-        cX3, cY3, cX4, cY4 = 0, 0, 0, 0
-        # Para escrever vamovpn definir uma fonte
+        cX1, cY2 = 0, 0
         texto = 'nao encontrado'
         origem = (0, 50)
         escreve_texto(contornos_img, texto, origem, (180, 100, 180))
