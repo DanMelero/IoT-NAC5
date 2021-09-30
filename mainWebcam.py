@@ -9,7 +9,7 @@ from functionsWebcam import *
 
 imgOriginal = cv2.imread("circulo.png")
 
-image_da_webcam(imgOriginal)
+
 #---------------------------------------------------------------------
 
 cv2.namedWindow("preview")
