@@ -12,14 +12,14 @@ import numpy as np
 #filtro baixo
 # image_lower_hsv1 = np.array([0, 142, 84])
 # image_upper_hsv1 = np.array([18, 205, 255])
-image_lower_hsv1 = np.array([0, 180, 125])
-image_upper_hsv1 = np.array([50, 255, 255])
+image_lower_hsv1 = np.array([0, 130, 190])
+image_upper_hsv1 = np.array([10, 255, 255])
 
 #filtro alto
 # image_lower_hsv2 = np.array([70, 160, 114])
 # image_upper_hsv2 = np.array([100, 205, 255])
-image_lower_hsv2 = np.array([18, 180, 125])
-image_upper_hsv2 = np.array([100, 255, 255])
+image_lower_hsv2 = np.array([163, 232, 137])
+image_upper_hsv2 = np.array([10, 255, 255])
 
 def filtro_de_cor(img_bgr, low_hsv, high_hsv):
     """ retorna a imagem filtrada"""
@@ -90,8 +90,8 @@ def image_da_webcam(img):
 
     # Verifica se existe alguma para calcular, se sim calcula e exibe no display
     if M1["m00"] != 0 and M2["m00"] != 0:
-        cv2.drawContours(contornos_img, [menor1], -1, [0, 0, 0], thickness=cv2.FILLED)
-        cv2.drawContours(contornos_img, [menor2], -1, [0, 0, 0], thickness=cv2.FILLED)
+        cv2.drawContours(contornos_img, [menor1], -1, [0, 0, 255], thickness=cv2.FILLED)
+        cv2.drawContours(contornos_img, [menor2], -1, [0, 0, 255], thickness=cv2.FILLED)
     
     elif M3["m00"] != 0 and M4["m00"] != 0:
         cX3 = int(M3["m10"] / M3["m00"])
@@ -112,7 +112,7 @@ def image_da_webcam(img):
         origem3 = (0, 50)
 
         texto4 = cY4, cX4
-        origem4 = (50, 0)
+        origem4 = (0, 50)
 
         escreve_texto(contornos_img, texto3, origem3, (0, 255, 0))
         escreve_texto(contornos_img, texto4, origem4, (0, 255, 0))
@@ -133,9 +133,9 @@ def image_da_webcam(img):
 
 cv2.namedWindow("preview")
 # define a entrada de video para webcam
-# vc = cv2.VideoCapture(0)
+vc = cv2.VideoCapture(0)
 
-vc = cv2.VideoCapture("teste.mp4") # para ler um video mp4
+# vc = cv2.VideoCapture("teste.mp4") # para ler um video mp4
 
 vc.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 vc.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
