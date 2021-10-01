@@ -45,15 +45,20 @@ Para clonar o repositório desse projeto:
     https://github.com/rm85109/IOT-NAC5
    
 ## Link de vídeo demonstração
-
-Adicione o link para assistir ao vídeo do projeto funcionando.
 <div style="margin-left: 30px; margin-bottom: 20px">
-    <a href="www.youtube.com.br"><img src="youtube.png" width="60px" height="60px"></a>
+    <a href="https://youtu.be/mcenGV_H9GY"><img src="youtube.png" width="60px" height="60px"></a>
 </div>
+
+
+### **Arquivos**
+- [Notebook]("NAC5R1R2.ipynb")
+- [Programa Python]("NAC5_R3.py")
+
 
 ### **Referências**
 
 <ul>
     <li><a style ="color: #34ebdb" href="https://stackoverflow.com/questions/19222343/filling-contours-with-opencv-python">filling contours with opencv python</a></li>
     <li><a style ="color: #34ebdb" href="https://www.pyimagesearch.com/2021/01/19/opencv-bitwise-and-or-xor-and-not/">penCV Bitwise AND, OR, XOR, and NOT by Adrian Rosebrock on January 19, 2021</a></li>
+    <li><a style ="color: #34ebdb" href="https://felipemeganha.medium.com/como-calcular-%C3%A2ngulos-com-python-e-opencv-4db69c1cee71">Felipe Meganha Oct 17, 2020</a></li>
 </ul>
