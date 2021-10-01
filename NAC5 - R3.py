@@ -42,7 +42,6 @@ def desenha_cruz(img, cX, cY, size, color):
 
 def escreve_texto(img, text, origem, color):
     font = cv2.FONT_HERSHEY_SIMPLEX
-    origem = (0, 50)
     cv2.putText(img, str(text), origem, font, 1, color, 2, cv2.LINE_AA)
 
 def image_da_webcam(img):
@@ -88,17 +87,13 @@ def image_da_webcam(img):
     M3 = cv2.moments(maior3)
     M4 = cv2.moments(maior4)
 
-    if M1["m00"] != 0 and M2["m00"] != 0 and M3["m00"] != 0 and M4["m00"] != 0:
+    if M1["m00"] != 0 and M2["m00"] != 0 and M3["m00"] and M4["m00"]:
         cX1 = int(M1["m10"] / M1["m00"])
         cY1 = int(M1["m01"] / M1["m00"])
         cX2 = int(M2["m10"] / M2["m00"])
         cY2 = int(M2["m01"] / M2["m00"])
-        cX3 = int(M3["m10"] / M3["m00"])
-        cY3 = int(M3["m01"] / M3["m00"])
-        cX4 = int(M4["m10"] / M4["m00"])
-        cY4 = int(M4["m01"] / M4["m00"])
 
-        cv2.drawContours(contornos_img, [maior1], -1, [11, 11, 177], thickness=cv2.FILLED)
+        cv2.drawContours(contornos_img, [maior1], -1, [11, 11, 117], thickness=cv2.FILLED)
         cv2.drawContours(contornos_img, [maior2], -1, [208, 226, 79], thickness=cv2.FILLED)
         cv2.drawContours(contornos_img, [maior3], -1, [0, 0, 0], thickness=cv2.FILLED)
         cv2.drawContours(contornos_img, [maior4], -1, [0, 0, 0], thickness=cv2.FILLED)
@@ -107,17 +102,17 @@ def image_da_webcam(img):
         desenha_cruz(contornos_img, cX2, cY2, 20, (208, 226, 79))
 
         texto1 = cY1, cX1
-        origem1 = (0, 50)
+        origem1 = (cY1+80, cX1-150)
 
         texto2 = cY2, cX2
-        origem2 = (0, 350)
+        origem2 = (cY2+80, cX2-150)
 
-        escreve_texto(contornos_img, texto1, origem1, (0, 255, 0))
-        escreve_texto(contornos_img, texto2, origem2, (0, 255, 0))
+        escreve_texto(contornos_img, texto1, origem1, (11, 11, 177))
+        escreve_texto(contornos_img, texto2, origem2, (208, 226, 79))
 
         coord1 = (cX1, cY1)
         coord2 = (cX2, cY2)
-        cv2.line(contornos_img, coord1, coord2, (255, 0, 0), 4)
+        cv2.line(contornos_img, coord1, coord2, (0, 255, 0), 4)
 
     else:
         cX1, cY2 = 0, 0
