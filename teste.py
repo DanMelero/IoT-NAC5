@@ -31,13 +31,11 @@ def mascara_or(mask1, mask2):
 
 
 def mascara_and(mask1, mask2):
-    """ retorna a mascara and"""
     mask = cv2.bitwise_and(mask1, mask2)
     return mask
 
 
 def desenha_cruz(img, cX, cY, size, color):
-    """ faz a cruz no ponto cx cy"""
     cv2.line(img, (cX - size, cY), (cX + size, cY), color, 5)
     cv2.line(img, (cX, cY - size), (cX, cY + size), color, 5)
 
@@ -60,48 +58,66 @@ def image_da_webcam(img):
 
     maior1 = None
     maior2 = None
+    maior3 = None
+    maior4 = None
 
     lista = []
 
-    for i in contornos:
-        area = int(cv2.contourArea(i))
-        lista.append(area)
-    listaOrdenada = lista.sort(reverse = True)
 
     for c in contornos:
         area = int(cv2.contourArea(c))
-        if listaOrdenada[0] == area:
-            maior1 = c
-        elif listaOrdenada[1] == area:
-            maior2 = c
-        
-    M1 = cv2.moments(maior1)
-    M2 = cv2.moments(maior2) 
+        lista.append(area)
+    lista.sort(reverse=True)
 
-    if M1["m00"] != 0 and M2["m00"] != 0:
+    print(lista)
+
+    for d in contornos:
+        area = int(cv2.contourArea(d))
+        if lista[0] == area:
+            maior1 = d
+        elif lista[1] == area:
+            maior2 = d
+        elif lista[2] == area:
+            maior3 = d
+        elif lista[3] == area:
+            maior4 = d
+            
+
+    M1 = cv2.moments(maior1)
+    M2 = cv2.moments(maior2)
+    M3 = cv2.moments(maior3)
+    M4 = cv2.moments(maior4)
+
+    if M1["m00"] != 0 and M2["m00"] != 0 and M3["m00"] != 0 and M4["m00"] != 0:
         cX1 = int(M1["m10"] / M1["m00"])
         cY1 = int(M1["m01"] / M1["m00"])
-        cX2 = int(M2["m01"] / M2["m00"])
+        cX2 = int(M2["m10"] / M2["m00"])
         cY2 = int(M2["m01"] / M2["m00"])
+        cX3 = int(M3["m10"] / M3["m00"])
+        cY3 = int(M3["m01"] / M3["m00"])
+        cX4 = int(M4["m10"] / M4["m00"])
+        cY4 = int(M4["m01"] / M4["m00"])
 
-        cv2.drawContours(contornos_img, [maior1], -1, [177, 11, 11], 5)
-        cv2.drawContours(contornos_img, [maior2], -1, [79, 226, 208], 5)
+        cv2.drawContours(contornos_img, [maior1], -1, [11, 11, 177], thickness=cv2.FILLED)
+        cv2.drawContours(contornos_img, [maior2], -1, [208, 226, 79], thickness=cv2.FILLED)
+        cv2.drawContours(contornos_img, [maior3], -1, [0, 0, 0], thickness=cv2.FILLED)
+        cv2.drawContours(contornos_img, [maior4], -1, [0, 0, 0], thickness=cv2.FILLED)
     
-        desenha_cruz(contornos_img, cX1, cY1, 20, (177, 11, 11))
-        desenha_cruz(contornos_img, cX2, cY2, 20, (79, 226, 208))
+        desenha_cruz(contornos_img, cX1, cY1, 20, (11, 11, 177))
+        desenha_cruz(contornos_img, cX2, cY2, 20, (208, 226, 79))
 
         texto1 = cY1, cX1
         origem1 = (0, 50)
 
         texto2 = cY2, cX2
-        origem2 = (0, 50)
+        origem2 = (0, 350)
 
         escreve_texto(contornos_img, texto1, origem1, (0, 255, 0))
         escreve_texto(contornos_img, texto2, origem2, (0, 255, 0))
 
         coord1 = (cX1, cY1)
         coord2 = (cX2, cY2)
-        cv2.line(contornos_img, coord1, coord2, (0, 0, 255), 4)
+        cv2.line(contornos_img, coord1, coord2, (255, 0, 0), 4)
 
     else:
         cX1, cY2 = 0, 0
